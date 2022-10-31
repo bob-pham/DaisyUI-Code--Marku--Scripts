@@ -1,0 +1,4 @@
+[
+    ["def|if|elif|else|or|for|while|break", "text-purple-600"],
+    ["class", "text-yellow-500"]
+]
