@@ -4,6 +4,7 @@ Scripts that generate HTML or JSX to be used in [DaisyUI's Code Markup Blocks](h
 
 # Usage
 
+If you want syntax highlighting, add a ```.json``` file named ```config.json``` into the sample directory, which store the regex and highlight colour for syntax highlighting. Two categories, keywords and other. Example ReGex are within the configs directory, but these ```.json``` files need to be renamed and moved in order to work. 
 ## Args
 
 ```
@@ -22,6 +23,6 @@ python daisy_ui_code_markup.py my_file.jsx jsx
 **output file will be [file_name]_output, and placed in the same directory**
 
 # Changelog
-
+- Syntax highlighting supported
 ## Todo:
-- Syntax highlighting support
+- Support syntax highlighting of . operators and strings
