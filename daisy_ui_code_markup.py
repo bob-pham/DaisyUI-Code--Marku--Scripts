@@ -5,47 +5,61 @@ import json
 
 INVALID_INPUT = 'Invalid Input, Exitting...'
 
+def find_and_replace_string(reg, line):
+    for (regex, edit) in reg:
+        words = re.findall(regex, line)
+                
+        visited = {}
+        for word in words:
+            if word not in visited.keys():
+                visited[word] = 1
+                line = line.replace(word, '\"}{<span className=\"' + edit + '\">{\"' + word + '\"}</span>}{\"')
+
+    return line
+
+def find_and_replace_word(reg, line):
+    temp = line.split(' ')
+    line = ''
+
+    for word in temp:
+        for (regex, edit) in reg:
+            if re.search(regex, word):
+                word = '\"}{<span className=\"' + edit + '\">{\"' + word + '\"}</span>}{\"'
+                break
+        line += word + ' '
+    
+    return line 
+
 def parse_input(fp, jsx):
     lines = fp.readlines()
 
     keywords = []
     other = []
+    strings = []
+    comments= []
 
     if os.path.exists('config.json'):
         with open('config.json', 'r') as cfg:
             j = json.load(cfg)
             keywords = j["keywords"]
             other = j["other"]
+            strings = j["strings"]
+            comments = j["comments"]
 
     if jsx:
         for i in range(len(lines)):
             curr = lines[i].replace('\n', '').replace('\\', '\\\\').replace('\'', '\\\'').replace('\"', '\\\"')
 
-            # if other:
-            #     for (regex, edit) in other:
-            #         words = re.findall(regex, curr)
+            if strings:
+               curr = find_and_replace_string(strings, curr) 
 
-            #         visited = {}
-
-            #         for word in words:
-            #             if word not in visited.keys():
-            #                 visited[word] = 1
-            #                 curr = curr.replace(word, '\"}{<span className=\"' + edit + '\">' + word + '</span>}{\"')
-
-            temp = curr.split(' ')
+            if other:
+                curr = find_and_replace_word(other, curr)
 
             if keywords:
-                curr = ''
-                for word in temp:
-                    for (regex, edit) in keywords:
-                        if re.search(regex, word):
-                            word = '\"}{<span className=\"' + edit + '\">' + word + '</span>}{\"'
-                            break
-                    curr += word + ' '
+                curr = find_and_replace_word(keywords, curr)
 
-            # curr = curr.replace('\"\"', '\"')
-
-            lines[i] = f'<pre data-prefix=\"{i}\">' + '<code>{\"'+ curr + '\"}</code></pre>\n'
+            lines[i] = f'<pre data-prefix=\"{i + 1}\">' + '<code>{\"'+ curr + '\"}</code></pre>\n'
     else:
         for i in range(len(lines)):
             lines[i] = f'<pre data-prefix=\"{i}\">' + '<code>'+ lines[i].replace('\n', '') + '</code></pre>\n'

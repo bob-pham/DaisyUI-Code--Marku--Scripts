@@ -5,6 +5,13 @@
         ["\\b(False|None|True)\\b", "text-orange-400"],
         ["\\b(abs|aiter|all|any|anext|ascii|bin|bool|breakpoint|bytearray|bytes|callable|chr|classmethod|compile|complex|delattr|dict|dir|divmod|enumerate|eval|exec|filter|float|format|frozenset|getattr|globals|hasattr|hash|help|help|hex|id|input|int|isinstance|issubclass|iter|len|list|locals|map|max|memoryview|min|next|object|oct|open|ord|pow|print|property|range|repr|reversed|round|set|setattr|slice|sorted|staticmethod|str|staticmethod|sum|super|tuple|type|vars|zip)\\b", "text-blue-500"]
     ],
+    "strings":[
+        ["'(.*)'", "text-green-500"],
+        ["\"(.*)\"", "text-green-500"]
+    ],
+    "comments":[
+        ["#", "text-base-100"]
+    ],
     "other": [
         ["\\\\", "text-blue-500"],
         ["\\.\\w+", "text-blue-500"]
